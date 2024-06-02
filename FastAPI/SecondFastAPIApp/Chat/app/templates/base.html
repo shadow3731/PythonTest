@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Test Chat{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Test Chat</h1>
+    </div>
+    <div class="main">
+        {% block content %}{% endblock  %}
+    </div>
+    <div class="footer">
+        <span>Online</span>
+        <button>{{ online_amount }}</button>
+        <span>Registered</span>
+        <button>{{ registered_amount }}</button>
+    </div>
+</body>
+</html>
