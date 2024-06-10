@@ -15,16 +15,13 @@ class Solution:
         if len(nums) > 0 and target > nums[-1]:
             return len(nums)
         
-        # Create a copy of "nums" which will be sliced to find 
-        # a target index
-        parts = nums
         # A variable to point to a target index
         position = 0
         
         # Start an endless cycle
         while True:
             # Get a middle index of the list
-            middle_index = len(parts) // 2
+            middle_index = len(nums) // 2
             # Add middle index value to a target position value. 
             # Because of we decrease the length of the initial list 
             # every time, we need to adjust the position value
@@ -33,15 +30,15 @@ class Solution:
             # Check if the current list is empty or if "target" 
             # value equals to a value located in the middle index 
             # of the current list 
-            if len(parts) == 0 or target == parts[middle_index]:
+            if len(nums) == 0 or target == nums[middle_index]:
                 # Return target position
                 return position
             
             # Check if there's 1 value left in the current list
-            if len(parts) == 1:
+            if len(nums) == 1:
                 # Check if "target" value is less than the only 
                 # element
-                if target < parts[0]:
+                if target < nums[0]:
                     # Return target position
                     return position
                 else:
@@ -50,15 +47,15 @@ class Solution:
             else:
                 # Check if "target" value is less than a value 
                 # located in the middle index of the current list 
-                if target < parts[middle_index]:
+                if target < nums[middle_index]:
                     # Get a halved list from the left
-                    parts = parts[:middle_index]
+                    nums = nums[:middle_index]
                     # Adjust position value
-                    position -= len(parts)
+                    position -= len(nums)
                 else:
                     # Get a halved list from the right exlucding 
                     # the middle value
-                    parts = parts[middle_index+1:]
+                    nums = nums[middle_index+1:]
                     # Adjust position value
                     position += 1
         
