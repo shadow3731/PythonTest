@@ -1,5 +1,9 @@
+# Solved
 
-from typing import Optional, Union
+# By 21.06.2024:
+# Runtime = 326 ms (beats 5.23% of users)
+# Memory = 18.18 MB (beats 12.56% of users)
+from typing import Optional
 
 
 class TreeNode:
@@ -10,118 +14,88 @@ class TreeNode:
         
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        # Check if "root" is None or both of its subtrees 
+        # are None
         if (
             root is None
             or (root.left is None and root.right is None)
         ):
             return True
         
+        # Function for defining the depth of a node
         def define_max_depth(root: Optional[TreeNode]) -> int:
-            if (
-                root is None
-                or (root.left is None and root.right is None)
-            ):
+            # Check if node is None
+            if root is None:
                 return 0
             
-            left_depth = 0
-            right_depth = 0
+            # Get initial depth value to both sides as 1
+            left_depth, right_depth = 1, 1
             
+            # Check if left subtree is not empty
             if root.left is not None:
+                # Go next to the subtree increasing the depth
                 left_depth += define_max_depth(root.left)
-                
+            
+            # Check if right subtree is not empty
             if root.right is not None:
+                # Go next to the subtree increasing the depth
                 right_depth += define_max_depth(root.right)
-                
+            
+            # Check if left subtree is deeper than the right one    
             if left_depth > right_depth:
+                # Get the left depth
                 return left_depth
             else:
+                # Get the right depth
                 return right_depth
         
-        left_depth = define_max_depth(root.left)
-        right_depth = define_max_depth(root.right)
+        # A list of all nodes in the certain depth
+        subtree_curr_gen: list[TreeNode] = [root]
+        # A list of all nodes in the 1 level deeper
+        subtree_next_gen: list[TreeNode] = []
         
-        print(left_depth, right_depth)
-        if abs(right_depth - left_depth) > 1:
-            return False
-        else:
-            return True
+        from copy import deepcopy
         
-        
-        # if root is None:
-        #     return True
+        # Start an endless cycle    
+        while True:
+            # Check every subtree in the certain depth
+            for subtree in subtree_curr_gen:
+                # Get the subtree depth of the left and right 
+                # sides
+                left_depth = define_max_depth(subtree.left)
+                right_depth = define_max_depth(subtree.right)
 
-        # left_root_balanced = None
-        # right_root_balanced = None
-        
-        # if root.left is not None:
-        #     if root.left.left is not None and root.left.right is not None:
-        #         left_is_balanced = self.isBalanced(root.left)
+                # Check if the left and right depths deffer more 
+                # than 1 level
+                if abs(right_depth - left_depth) > 1:
+                    # The treenode object is not high-balanced
+                    return False
                 
-        #     elif root.left.left is None and root.left.right is None:
-        
-        
-        
-        # if (
-        #     root is None 
-        #     or (root.left is None and root.right is None)
-        # ):
-        #     return True
-        
-        # if (
-        #     (root.left is None and root.right is not None)
-        #     or (root.left is not None and root.right is None)
-        # ):
-        #     return False
-        
-        # left_is_balanced = self.isBalanced(root.left)
-        # right_is_balanced = self.isBalanced(root.right)
-        
-        # if (
-        #     left_is_balanced is True 
-        #     and right_is_balanced is True
-        # ):
-        #     return True
-        # else:
-        #     return False
-        
-        
-        
-        
-        
-        # left_height = 0
-        # right_height = 0
-        
-        # def calculate_height(root: Optional[TreeNode], heght_val: int) -> int:
-        #     while True:
-                
-        
-        # def inorderTraversal(root: Optional[TreeNode]) -> int:
-        #     # Check if "root" is empty
-        #     if root is None or root.val is None:
-        #         return 0
+                else:
+                    # Check if the left subtree is not empty       
+                    if subtree.left is not None:
+                        # Store the node which is 1 level deeper
+                        subtree_next_gen.append(subtree.left)
+                    
+                    # Check if the right subtree is not empty    
+                    if subtree.right is not None:
+                        # Store the node which is 1 level deeper
+                        subtree_next_gen.append(subtree.right)
             
-        #     # Check if "root" contains a left subtree
-        #     if root.left is not None:
-        #         # Make the subtree as a "root", work with him and 
-        #         # insert all the got values
-        #         amount += inorderTraversal(root.left)
+            # Check if there's any nodes deeper than the current
+            # ones            
+            if len(subtree_next_gen) > 0:
+                # Store and use new nodes
+                subtree_curr_gen = deepcopy(subtree_next_gen)
+                # Clear the list of new nodes
+                subtree_next_gen.clear()
             
-        #     # Check if "root" contains a right subtree
-        #     if root.right is not None:
-        #         # Make the subtree as a "root", work with him and 
-        #         # insert all the got values
-        #         amount += inorderTraversal(root.right)
-                
-        #     # Return the result list
-        #     return amount
-            
-        # left_nodes_amount = inorderTraversal(root.left)
-        # right_nodes_amount = inorderTraversal(root.right)
+            else:
+                break
         
-        # if abs(right_nodes_amount - left_nodes_amount) > 1:
-        #     return False
-        # else:
-        #     return True
+        # The treenode object is high-balanced
+        return True
+        
         
 if __name__ == '__main__':
     root = TreeNode(
@@ -135,5 +109,19 @@ if __name__ == '__main__':
         1,
         TreeNode(2, TreeNode(3, TreeNode(4), TreeNode(4)), TreeNode(3)),
         TreeNode(2)
+    )
+    print(Solution().isBalanced(root))
+    
+    root = TreeNode(
+        1,
+        None,
+        TreeNode(2, None, TreeNode(3))
+    )
+    print(Solution().isBalanced(root))
+    
+    root = TreeNode(
+        1,
+        TreeNode(2, TreeNode(3, TreeNode(4))),
+        TreeNode(2, None, TreeNode(3, None, TreeNode(4)))
     )
     print(Solution().isBalanced(root))
