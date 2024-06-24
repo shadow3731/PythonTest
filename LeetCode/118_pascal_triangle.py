@@ -36,8 +36,11 @@ class Solution:
         return rows
     
 if __name__ == '__main__':
-    numRows = 5
-    print(Solution().generate(numRows))
+    # numRows = 5
+    # print(Solution().generate(numRows))
     
-    numRows = 1
+    # numRows = 1
+    # print(Solution().generate(numRows))
+    
+    numRows = 14
     print(Solution().generate(numRows))
