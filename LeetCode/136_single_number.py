@@ -1,3 +1,8 @@
+# Solved
+
+# By 26.06.2024:
+# Runtime = 101 ms (beats 92.67% of users)
+# Memory = 19 MB (beats 54.28% of users)
 from typing import List
 
 
@@ -9,7 +14,7 @@ class Solution:
         # A cycle to go through every value of the list
         for num in nums:
             # Make xor operation on every value. So that only 
-            # non repeating value will stay
+            # a single value will stay
             result ^= num
         
         # Return a unique value
